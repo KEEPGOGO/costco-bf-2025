@@ -5332,7 +5332,12 @@
 
             const priceDisplay = item.sale > 0 ? `$${item.sale.toLocaleString()}` : "依重量";
             const originalDisplay = item.original > 0 ? `$${item.original.toLocaleString()}` : "---";
-            const discountDisplay = item.discount > 0 ? `省 $${item.discount.toLocaleString()}` : "現場特價";
+            // 修正後代碼 (使用 Math.abs() 取得絕對值，並確保折扣值非零):
+            const absoluteDiscount = Math.abs(item.discount);
+
+            const discountDisplay = absoluteDiscount > 0 ? 
+                `省 $${absoluteDiscount.toLocaleString()}` : 
+                "現場特價";
             
             const modelDisplay = item.model ? item.model.replace('ITEM #', '') : '';
 
