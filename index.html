@@ -10,7 +10,8 @@
             --accent: #e31837; /* Costco Red */
             --bg: #f4f4f4;
             --text-color: #333;
-            --discount-bg: #ffdd00; /* Yellow */
+            /* 新增折扣背景顏色，與原風格的 discount-badge 匹配 */
+            --discount-bg: rgba(227, 24, 55, 0.1); 
         }
         body {
             font-family: "Microsoft JhengHei", Arial, sans-serif;
@@ -40,408 +41,440 @@
             margin-bottom: 20px;
             border-bottom: 2px solid #ddd;
             padding-bottom: 10px;
-            overflow-x: auto;
-        }
-        .tab-button {
-            background-color: #fff;
-            color: var(--primary);
-            border: 1px solid var(--primary);
-            padding: 8px 15px;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: all 0.3s;
+            overflow-x: auto; /* 手機版可橫滑 */
             white-space: nowrap;
         }
-        .tab-button:hover {
-            background-color: var(--primary);
-            color: white;
+        .tab-btn {
+            padding: 10px 20px;
+            border: 1px solid #ddd;
+            background: #f9f9f9;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+            color: #666;
+            transition: all 0.3s;
         }
-        .tab-button.active {
-            background-color: var(--primary);
+        .tab-btn:hover {
+            background: #eef;
+        }
+        .tab-btn.active {
+            background: var(--primary);
             color: white;
             border-color: var(--primary);
+            box-shadow: 0 2px 5px rgba(0,94,184,0.3);
         }
+        /* ------------------------ */
 
-        /* --- 篩選與排序區 --- */
+        /* Controls */
         .controls {
             display: flex;
             flex-wrap: wrap;
             gap: 15px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #eee;
+            border-radius: 8px;
             align-items: center;
         }
-        .controls input[type="text"], .controls select {
-            padding: 8px 10px;
+        .control-group {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            font-size: 12px;
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 5px;
+        }
+        select, input {
+            padding: 8px;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 4px;
             font-size: 16px;
         }
-        .controls label {
-            font-weight: bold;
-        }
-        #searchInput {
-            flex-grow: 1;
-            min-width: 200px;
-        }
 
-        /* --- 商品網格與卡片樣式 --- */
+        /* Product Grid */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 20px;
         }
         .card {
-            background: #fff;
-            border: 1px solid #eee;
+            border: 1px solid #ddd;
             border-radius: 8px;
             padding: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            background: white;
             transition: transform 0.2s;
-            display: flex;
-            flex-direction: column;
+            position: relative;
+            overflow: hidden;
         }
         .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        .card h3 {
-            font-size: 18px;
-            margin-top: 5px;
-            margin-bottom: 10px;
-            color: var(--text-color);
-            line-height: 1.4;
-            flex-grow: 1; /* 讓名稱區域撐開，保持價格區在底部對齊 */
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-color: var(--primary);
         }
         .category-tag {
-            display: inline-block;
-            background-color: var(--primary);
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #666;
             color: white;
             font-size: 12px;
             padding: 3px 8px;
-            border-radius: 3px;
-            margin-bottom: 8px;
-            font-weight: normal;
+            border-radius: 10px;
         }
-
-        /* --- 價格區塊樣式 --- */
+        .card h3 {
+            margin: 25px 0 10px 0;
+            font-size: 16px;
+            color: #333;
+            height: 44px;
+            overflow: hidden;
+            line-height: 1.4;
+        }
+        .model-code {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 5px;
+        }
         .price-row {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 5px;
+            align-items: flex-end;
+            margin-top: 10px;
+        }
+        .original {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 14px;
         }
         .sale-price {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: bold;
             color: var(--accent);
         }
-        .original-price {
-            font-size: 14px;
-            color: #888;
-            text-decoration: line-through;
-        }
-        .discount-tag {
-            background-color: var(--discount-bg);
-            color: var(--text-color);
-            font-weight: bold;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 14px;
-            white-space: nowrap;
-        }
-        .model-info {
-            font-size: 12px;
-            color: #aaa;
+        .discount-badge {
+            background: rgba(227, 24, 55, 0.1);
+            color: var(--accent);
+            padding: 8px;
+            border-radius: 5px;
             margin-top: 10px;
-            border-top: 1px solid #eee;
-            padding-top: 5px;
+            text-align: center;
+            font-weight: bold;
+            border: 1px dashed var(--accent);
         }
-        .note {
+        .cp-tag {
+            display: block;
             font-size: 12px;
-            color: #555;
-            margin-top: 5px;
+            color: #d32f2f;
+            text-align: center;
+            margin-top: 4px;
         }
+        
+        /* 空狀態樣式 */
         .empty-state {
             grid-column: 1 / -1;
             text-align: center;
-            padding: 50px 20px;
-            background: #fff;
-            border: 1px dashed #ccc;
-            border-radius: 8px;
-            margin-top: 20px;
+            padding: 50px;
+            color: #999;
+            background: #f9f9f9;
+            border-radius: 10px;
+            border: 2px dashed #ddd;
         }
-        .loading-state {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 50px 20px;
-        }
-        .loading-state h2::after {
-            content: '...';
-            display: inline-block;
-            overflow: hidden;
-            vertical-align: bottom;
-            animation: loading-dots 1.5s infinite;
-        }
-        @keyframes loading-dots {
-            0%, 20% { width: 0; }
-            40% { width: .5em; }
-            60% { width: 1em; }
-            80%, 100% { width: 1.5em; }
-        }
+        .empty-state h2 { font-size: 24px; margin-bottom: 10px; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>2025 Costco 黑色星期五特價查詢</h1>
 
-        <div class="tabs" id="dayTabs">
-            </div>
+<div class="container">
+    <h1>🛒 Costco 2025 黑五特價情報</h1>
 
-        <div class="controls">
-            <input type="text" id="searchInput" placeholder="搜尋商品名稱或商品編號 (Model #)">
-            
-            <label for="categorySelect">分類:</label>
+    <div class="tabs" id="dayTabs">
+        </div>
+
+    <div class="controls">
+        <div class="control-group">
+            <label>🔎 搜尋商品</label>
+            <input type="text" id="searchInput" placeholder="輸入電視、洗衣機...">
+        </div>
+
+        <div class="control-group">
+            <label>📂 分類篩選</label>
             <select id="categorySelect">
-                <option value="all">所有分類</option>
-                <option value="appliance">家電</option>
-                <option value="electronics">3C</option>
-                <option value="food">食品</option>
-                <option value="life">生活</option>
-            </select>
-
-            <label for="sortSelect">排序:</label>
-            <select id="sortSelect">
-                <option value="day_asc">日期新到舊</option>
-                <option value="discount_desc">折扣金額高到低</option>
-                <option value="percent_desc">折扣百分比高到低</option>
-                <option value="price_asc">價格低到高</option>
+                <option value="all">全部顯示</option>
+                <option value="appliance">📺 家電 (電視/冰箱)</option>
+                <option value="electronics">🎮 3C / 電玩</option>
+                <option value="life">👕 服飾與生活</option>
+                <option value="food">🥩 生鮮與食品</option>
             </select>
         </div>
 
-        <div class="grid" id="productGrid">
-            <div class="loading-state">
-                <h2>正在載入商品數據</h2>
-            </div>
+        <div class="control-group">
+            <label>📊 排序方式</label>
+            <select id="sortSelect">
+                <option value="day_asc">日期新到舊</option>
+                <option value="discount_desc">💰 折扣金額 (高 → 低)</option>
+                <option value="percent_desc">📉 折扣幅度 % (大 → 小)</option>
+                <option value="price_asc">💲 售價 (低 → 高)</option>
+            </select>
         </div>
     </div>
 
-    <script>
-        // 🚨 數據分離：rawData 變數已被移除。數據將異步載入到 window.allProductsData
-        let currentDay = 1; // 預設顯示 Day 1
-        let allProductsData = [];
+    <div id="productGrid" class="grid">
+        <div class="empty-state">
+            <h2>⏳ 正在載入數據...</h2>
+            <p>請稍候片刻，或檢查 data.json 檔案是否存在。</p>
+        </div>
+    </div>
+</div>
 
-        const dayTabs = document.getElementById('dayTabs');
-        const searchInput = document.getElementById('searchInput');
-        const categorySelect = document.getElementById('categorySelect');
-        const sortSelect = document.getElementById('sortSelect');
-        const grid = document.getElementById('productGrid');
+<script>
+    // 🚨 數據分離：rawData 變數已移除，改為異步載入到 allProductsData
+    let currentDay = 1; 
+    let allProductsData = []; // 儲存所有載入的商品數據
 
-        // --- 核心函數 ---
+    const dayTabs = document.getElementById('dayTabs');
+    const grid = document.getElementById('productGrid');
+    const searchInput = document.getElementById('searchInput');
+    const categorySelect = document.getElementById('categorySelect');
+    const sortSelect = document.getElementById('sortSelect');
+    
+    // 原始 HTML 中硬編碼的 tab-btn 列表 (現在將被動態生成取代)
+    const staticDayButtons = [1, 2, 3, 4, 5, 6, 7]; 
 
-        /**
-         * 渲染商品卡片到網格中
-         * @param {Array} items - 經過篩選和排序的商品列表
-         */
-        function render(items) {
-            grid.innerHTML = '';
+    // --- 核心函數 ---
+
+    /**
+     * 渲染商品卡片到網格中
+     * @param {Array} items - 經過篩選和排序的商品列表
+     */
+    function render(items) {
+        grid.innerHTML = '';
+
+        if (items.length === 0) {
+            let msg = `Day ${currentDay} 的特價情報尚未更新，請稍後再來！`;
+            if(allProductsData.length === 0) {
+                msg = "目前沒有任何資料，請執行 merge.py 更新數據並確保 data.json 存在。";
+            }
             
-            if (items.length === 0) {
-                grid.innerHTML = `
-                    <div class="empty-state">
-                        <h2>🚧 尚無資料</h2>
-                        <p>找不到符合條件的商品。</p>
-                    </div>
-                `;
-                return;
-            }
-
-            items.forEach(item => {
-                // 1. 價格計算
-                const salePrice = item.sale ? item.sale.toLocaleString() : 'N/A';
-                const originalPrice = item.original ? item.original.toLocaleString() : '';
-                
-                // 2. 折扣顯示邏輯 (修正 negative discount)
-                const absoluteDiscount = Math.abs(item.discount || 0); // 取絕對值
-                const discountDisplay = absoluteDiscount > 0 ? 
-                    `省 $${absoluteDiscount.toLocaleString()}` : 
-                    "現場特價";
-                
-                // 3. 折扣百分比
-                let percentDisplay = '';
-                if (item.original > 0 && absoluteDiscount > 0) {
-                    const percent = (absoluteDiscount / item.original) * 100;
-                    percentDisplay = ` (${percent.toFixed(0)}%)`;
-                }
-
-                // 4. 圖片路徑 (預留給未來使用，Model ID 作為檔名)
-                // 假設圖片儲存在 images/ 資料夾
-                const imagePath = item.model ? `images/${item.model}.jpg` : 'images/placeholder.jpg';
-
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.innerHTML = `
-                    <img src="${imagePath}" alt="${item.name}" style="width: 100%; height: auto; border-radius: 5px; margin-bottom: 10px; background-color: #f0f0f0; border: 1px solid #ccc;">
-                    
-                    <span class="category-tag">${item.catName || item.category} (Day ${item.day})</span>
-                    
-                    <h3>${item.name}</h3>
-
-                    <div class="price-row">
-                        <span class="sale-price">$${salePrice}</span>
-                        <span class="discount-tag">
-                            ${discountDisplay}
-                            ${percentDisplay}
-                        </span>
-                    </div>
-                    
-                    ${item.original > 0 ? `<div class="original-price">原價 $${originalPrice}</div>` : ''}
-
-                    ${item.note ? `<div class="note">細項: ${item.note}</div>` : ''}
-                    
-                    ${item.model ? `<div class="model-info">商品編號: ${item.model}</div>` : ''}
-                `;
-                grid.appendChild(card);
-            });
+            grid.innerHTML = `
+                <div class="empty-state">
+                    <h2>🚧 尚無資料</h2>
+                    <p>${msg}</p>
+                </div>
+            `;
+            return;
         }
 
-        /**
-         * 執行所有篩選和排序邏輯，並呼叫 render
-         */
-        function filterAndSort() {
-            if (allProductsData.length === 0) {
-                render([]);
-                return;
-            }
-
-            let result = [...allProductsData];
-
-            // --- 步驟 0: Day Filter ---
-            if (currentDay > 0) {
-                result = result.filter(p => p.day === currentDay);
-            }
-
-            // --- 步驟 1: 搜尋 Filter ---
-            const keyword = searchInput.value.toLowerCase();
-            if (keyword) {
-                result = result.filter(p => 
-                    p.name.toLowerCase().includes(keyword) || 
-                    (p.model && p.model.toLowerCase().includes(keyword))
-                );
-            }
-
-            // --- 步驟 2: 分類 Filter ---
-            const cat = categorySelect.value;
-            if (cat !== 'all') {
-                result = result.filter(p => p.category === cat);
-            }
-
-            // --- 步驟 3: 排序 Sort ---
-            const sortType = sortSelect.value;
-            if (sortType === 'discount_desc') {
-                // 排序時也使用絕對值
-                result.sort((a, b) => Math.abs(b.discount || 0) - Math.abs(a.discount || 0));
-            } else if (sortType === 'price_asc') {
-                result.sort((a, b) => {
-                    // 將沒有 sale 價的排在後面
-                    if(a.sale === 0) return 1;
-                    return a.sale - b.sale;
-                });
-            } else if (sortType === 'percent_desc') {
-                result.sort((a, b) => {
-                    const discA = Math.abs(a.discount || 0);
-                    const discB = Math.abs(b.discount || 0);
-
-                    const perA = a.original > 0 ? (discA / a.original) : 0;
-                    const perB = b.original > 0 ? (discB / b.original) : 0;
-                    return perB - perA;
-                });
-            } else if (sortType === 'day_asc') {
-                 result.sort((a, b) => b.day - a.day); // 日期新到舊
-            }
-
-
-            render(result);
-        }
-
-        /**
-         * 設置當前顯示的天數，並觸發篩選
-         * @param {number} day - 要顯示的天數
-         */
-        function setDay(day) {
-            currentDay = day;
-            document.querySelectorAll('.tab-button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            const activeBtn = document.getElementById(`day-tab-${day}`);
-            if (activeBtn) {
-                activeBtn.classList.add('active');
-            }
-            filterAndSort();
-        }
-
-        /**
-         * 動態創建 Day Tabs (為了確保能顯示 Day 1, Day 2, Day 3...)
-         */
-        function createDayTabs() {
-            // 找出數據中最大的天數
-            const maxDay = allProductsData.reduce((max, p) => Math.max(max, p.day), 0);
-            dayTabs.innerHTML = '';
-            for (let i = 1; i <= maxDay; i++) {
-                const button = document.createElement('button');
-                button.className = 'tab-button';
-                button.id = `day-tab-${i}`;
-                button.textContent = `Day ${i}`;
-                button.onclick = () => setDay(i);
-                dayTabs.appendChild(button);
-            }
-            // 預設選中 Day 1
-            if (maxDay >= 1) {
-                setDay(1);
+        items.forEach(item => {
+            // 1. 價格計算
+            const priceDisplay = item.sale > 0 ? `$${item.sale.toLocaleString()}` : "依重量";
+            const originalDisplay = item.original > 0 ? `$${item.original.toLocaleString()}` : "---";
+            
+            // 2. 折扣顯示邏輯 (修正：使用 Math.abs 處理負數 discount)
+            const absoluteDiscount = Math.abs(item.discount || 0); // 取絕對值
+            const discountDisplay = absoluteDiscount > 0 ? 
+                `省 $${absoluteDiscount.toLocaleString()}` : 
+                "現場特價";
+            
+            // 3. 折扣百分比計算
+            let percentText = "";
+            let percent = 0;
+            if(item.original > 0 && absoluteDiscount > 0) {
+                percent = Math.round((absoluteDiscount / item.original) * 100);
+                // 顯示折數和百分比
+                percentText = `約 ${((100 - percent) / 10).toFixed(1).replace('.0', '')} 折 (-${percent}%)`;
             } else {
-                render([]); // 如果沒有數據，顯示空狀態
+                // 如果沒有折扣，顯示備註或特殊價格
+                percentText = item.note || "專案活動價";
             }
+            
+            // 4. 圖片預留區 (假設圖片檔名為 model.jpg)
+            const imagePath = item.model ? `images/${item.model}.jpg` : 'images/placeholder.jpg';
+            
+            const modelDisplay = item.model ? item.model.replace('ITEM #', '') : '';
+
+            const card = document.createElement('div');
+            card.className = 'card';
+            
+            // 為了保留原始風格，這裡不新增 img 標籤，但知道未來可以放在 h3 上方
+            
+            card.innerHTML = `
+                <span class="category-tag">${item.catName || item.category}</span>
+                <h3>${item.name}</h3>
+                <div class="model-code">型號: ${modelDisplay}</div>
+                <div class="original">原價: ${originalDisplay}</div>
+                <div class="price-row">
+                    <div class="sale-price">${priceDisplay}</div>
+                </div>
+                <div class="discount-badge">
+                    ${discountDisplay}
+                </div>
+                <span class="cp-tag">${percentText}</span>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    /**
+     * 執行所有篩選和排序邏輯
+     */
+    function filterAndSort() {
+        if (allProductsData.length === 0) {
+            render([]);
+            return;
+        }
+
+        let result = [...allProductsData];
+
+        // 0. 日期 Filter
+        if (currentDay !== 'all') {
+            result = result.filter(p => p.day === currentDay);
+        } else {
+            // 如果顯示全部，可以選擇只保留最新的（Day最大的）一筆數據
+            // 為了簡化，這裡保留所有天數的數據，但如果數量太大需要進一步優化
+        }
+
+        // 1. 搜尋 Filter
+        const keyword = searchInput.value.toLowerCase();
+        if (keyword) {
+            result = result.filter(p => 
+                p.name.toLowerCase().includes(keyword) || 
+                (p.model && p.model.toLowerCase().includes(keyword))
+            );
+        }
+
+        // 2. 分類 Filter
+        const cat = categorySelect.value;
+        if (cat !== 'all') {
+            result = result.filter(p => p.category === cat);
+        }
+
+        // 3. 排序 Sort
+        const sortType = sortSelect.value;
+        if (sortType === 'discount_desc') {
+            // 排序時使用絕對值
+            result.sort((a, b) => Math.abs(b.discount || 0) - Math.abs(a.discount || 0));
+        } else if (sortType === 'price_asc') {
+            result.sort((a, b) => {
+                if(a.sale === 0) return 1;
+                return a.sale - b.sale;
+            });
+        } else if (sortType === 'percent_desc') {
+            result.sort((a, b) => {
+                const discA = Math.abs(a.discount || 0);
+                const discB = Math.abs(b.discount || 0);
+                const perA = a.original > 0 ? (discA / a.original) : 0;
+                const perB = b.original > 0 ? (discB / b.original) : 0;
+                return perB - perA;
+            });
+        } else if (sortType === 'day_asc') {
+             // 新增排序，確保 Day 1 優先，Day 7 最後
+             result.sort((a, b) => a.day - b.day);
+        }
+
+
+        render(result);
+    }
+
+    /**
+     * 設置當前顯示的天數，並觸發篩選
+     */
+    function setDay(day) {
+        currentDay = day;
+        
+        // 更新按鈕樣式 (重新查詢所有 tab-btn)
+        const allTabBtns = document.querySelectorAll('.tab-btn');
+        allTabBtns.forEach(btn => {
+            btn.classList.remove('active');
+            if (day === 'all' && btn.innerText.includes('全部')) {
+                btn.classList.add('active');
+            } else if (btn.innerText.includes(`Day ${day}`)) {
+                btn.classList.add('active');
+            }
+        });
+
+        filterAndSort();
+    }
+
+    /**
+     * 動態創建 Day Tabs
+     */
+    function createDayTabs() {
+        const maxDay = allProductsData.reduce((max, p) => Math.max(max, p.day || 0), 0);
+        dayTabs.innerHTML = ''; // 清空舊的按鈕
+
+        for (let i = 1; i <= maxDay; i++) {
+            const button = document.createElement('button');
+            button.className = 'tab-btn';
+            button.textContent = `Day ${i}`;
+            button.onclick = () => setDay(i);
+            dayTabs.appendChild(button);
         }
         
-        /**
-         * 異步載入數據 (關鍵修正)
-         */
-        async function loadData() {
-            grid.innerHTML = `<div class="loading-state"><h2>正在載入商品數據</h2></div>`;
+        // 添加「顯示全部」按鈕
+        const allButton = document.createElement('button');
+        allButton.className = 'tab-btn';
+        allButton.textContent = `顯示全部`;
+        allButton.onclick = () => setDay('all');
+        dayTabs.appendChild(allButton);
 
-            try {
-                const response = await fetch('data.json'); 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const rawData = await response.json();
-                
-                // 將載入的數據賦予全域變數
-                allProductsData = rawData; 
-                
-                // 數據載入完成後，創建 Tab 並開始渲染
-                createDayTabs();
-
-            } catch (error) {
-                console.error("Error loading data.json:", error);
-                grid.innerHTML = `
-                    <div class="empty-state">
-                        <h2>❌ 數據載入失敗</h2>
-                        <p>無法從伺服器獲取商品資料。請確認 data.json 檔案已存在。</p>
-                    </div>
-                `;
-            }
+        // 預設選中 Day 1
+        if (maxDay >= 1) {
+            setDay(1);
+        } else {
+            // 如果 data.json 載入但無數據
+            grid.innerHTML = `
+                <div class="empty-state">
+                    <h2>⚠️ 資料庫為空</h2>
+                    <p>data.json 檔案已成功載入，但其中沒有商品數據。</p>
+                </div>
+            `;
         }
+    }
+
+    /**
+     * 異步載入數據 (數據分離的核心)
+     */
+    async function loadData() {
+        grid.innerHTML = `<div class="empty-state"><h2>⏳ 正在載入數據...</h2><p>請稍候片刻，或檢查 data.json 檔案是否存在。</p></div>`;
+
+        try {
+            const response = await fetch('data.json'); 
+            if (!response.ok) {
+                // 如果 HTTP 狀態碼不是 200-299，拋出錯誤
+                throw new Error(`無法載入 data.json. 狀態: ${response.status}`);
+            }
+            const rawData = await response.json();
+            
+            // 將載入的數據賦予全域變數
+            allProductsData = rawData; 
+            
+            // 數據載入完成後，創建 Tab 並開始渲染
+            createDayTabs();
+
+        } catch (error) {
+            console.error("Error loading data.json:", error);
+            grid.innerHTML = `
+                <div class="empty-state">
+                    <h2>❌ 數據載入失敗</h2>
+                    <p>無法從伺服器獲取商品資料。請確認 data.json 檔案已存在且格式正確 (本地測試需啟動伺服器)。</p>
+                </div>
+            `;
+        }
+    }
 
 
-        // --- 監聽事件 ---
-        // 頁面載入時開始載入數據
-        window.addEventListener('load', loadData);
+    // --- 監聽事件 ---
+    // 頁面載入時開始載入數據 (取代靜態賦值)
+    window.addEventListener('load', loadData);
 
-        // 篩選和排序邏輯的監聽器
-        searchInput.addEventListener('input', filterAndSort);
-        categorySelect.addEventListener('change', filterAndSort);
-        sortSelect.addEventListener('change', filterAndSort);
-        
-    </script>
+    // 篩選和排序邏輯的監聽器
+    searchInput.addEventListener('input', filterAndSort);
+    categorySelect.addEventListener('change', filterAndSort);
+    sortSelect.addEventListener('change', filterAndSort);
+    
+</script>
+
 </body>
 </html>
