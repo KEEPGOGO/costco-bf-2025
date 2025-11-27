@@ -202,11 +202,22 @@
             <label>📂 分類篩選</label>
             <select id="categorySelect">
                 <option value="all">全部顯示</option>
-                <option value="appliance">📺 家電 (電視/冰箱)</option>
-                <option value="electronics">🎮 3C / 電玩</option>
-                <option value="life">👕 服飾與生活</option>
-                <option value="food">🥩 生鮮與食品</option>
-            </select>
+                <option value="大型家電">🏠 大型家電</option>
+                <option value="廚房小家電">🍽 廚房小家電</option>
+                <option value="居家清潔/護理家電">🧼 居家清潔/護理家電</option>
+                <option value="電腦/週邊">💻 電腦/週邊</option>
+                <option value="手機/影音配件">🎧 手機/影音配件</option>
+                <option value="服飾/鞋類">👗 服飾/鞋類</option>
+                <option value="個人清潔/美妝">🧴 個人清潔/美妝</option>
+                <option value="傢俱/寢具">🛏️ 傢俱/寢具</option>
+                <option value="居家生活/裝飾">🖼️ 居家生活/裝飾</option>
+                <option value="戶外/運動/休閒">🏀 戶外/運動/休閒</option>
+                <option value="生鮮/冷凍食品">🥩 生鮮/冷凍食品</option>
+                <option value="烘焙/零食/飲品">🍫 烘焙/零食/飲品</option>
+                <option value="保健食品">💊 保健食品</option>
+                <option value="嬰幼兒用品">🧸 嬰幼兒用品</option>
+                <option value="寵物用品">🐾 寵物用品</option>
+                </select>
         </div>
 
         <div class="control-group">
@@ -349,10 +360,11 @@
             );
         }
 
-        // 2. 分類 Filter
-        const cat = categorySelect.value;
-        if (cat !== 'all') {
-            result = result.filter(p => p.category === cat);
+        // 2. 分類 Filter (***此處為關鍵改動***: 篩選 catName 而非 category)
+        const catNameSelected = categorySelect.value;
+        if (catNameSelected !== 'all') {
+            // 篩選時檢查商品的 catName 是否與選中的分類名稱一致
+            result = result.filter(p => p.catName === catNameSelected);
         }
 
         // 3. 排序 Sort
